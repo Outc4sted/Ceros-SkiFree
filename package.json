@@ -2,8 +2,7 @@
     "name": "ceros-ski",
     "version": "0.0.1",
     "private": true,
-    "description": "",
-    "main": "web.js",
+    "description": "Homework app that is a simple version of the classic Windows game SkiFree",
     "scripts": {
         "build": "webpack --mode production",
         "start": "webpack-dev-server --open --mode development"
