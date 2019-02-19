@@ -13,10 +13,14 @@ const privateMethods = {
   placeNewObstacle: Symbol.for('placeNewObstacle'),
   placeRandomObstacle: Symbol.for('placeRandomObstacle'),
   random: Symbol.for('random'),
+  resetGame: Symbol.for('resetGame'),
   setupKeyhandler: Symbol.for('setupKeyhandler'),
 };
 
 const initialState = {
+  acceleration: .02,
+  highscore: 0,
+  score: 0,
   obstacles: [],
   skierDirection: 5,
   skierMapX: 0,
@@ -34,22 +38,25 @@ class GameMaster {
       gameHeight: innerHeight,
     });
 
+    this.gameHeader = document.createElement('div');
+    this.gameHeader.setAttribute('id', 'game-header');
+    document.body.appendChild(this.gameHeader);
+
     const canvas = document.createElement('canvas');
     canvas.setAttribute('width', innerWidth * devicePixelRatio)
-    canvas.setAttribute('height', innerHeight * devicePixelRatio)
+    canvas.setAttribute('height', innerHeight * devicePixelRatio - 50)
     canvas.setAttribute('style', `width: {innerWidth}px, height: {innerHeight}px`);
     document.body.appendChild(canvas);
 
     this.ctx = canvas.getContext('2d');
+    window.addEventListener('keydown', this[privateMethods.setupKeyhandler].bind(this));
   }
 
-  initGame = () => {
-    AssetManager.load.call(this).then(() => {
-      this[privateMethods.placeInitialObstacles]();
-      window.addEventListener('keydown', this[privateMethods.setupKeyhandler].bind(this));
-      window.requestAnimationFrame(this[privateMethods.gameLoop].bind(this));
-    });
-  }
+  initGame = () => AssetManager.load.call(this).then(() => {
+    this.gameHeader.innerHTML = `<h1>Highest: ${this.state.highscore} <> Current Score: ${this.state.score}</h1>`;
+    this[privateMethods.placeInitialObstacles]();
+    window.requestAnimationFrame(this[privateMethods.gameLoop].bind(this));
+  });
 
   [privateMethods.gameLoop]() {
     const { ctx } = this;
@@ -136,7 +143,7 @@ class GameMaster {
 
   [privateMethods.moveSkier]() {
     const { skierDirection } = this.state;
-    let { skierMapX, skierMapY, skierSpeed } = this.state;
+    let { acceleration, score, highscore, skierMapX, skierMapY, skierSpeed } = this.state;
 
     switch(skierDirection) {
       case 0:
@@ -144,27 +151,34 @@ class GameMaster {
         break;
 
       case 2:
-        skierSpeed += .02;
+        skierSpeed += acceleration;
         skierMapX -= Math.round(skierSpeed / 1.4142);
         skierMapY += Math.round(skierSpeed / 1.4142);
+        score = Math.round(skierMapY/100);
         this[privateMethods.placeNewObstacle](skierDirection);
         break;
 
       case 3:
-        skierSpeed += .02;
+        skierSpeed += acceleration;
         skierMapY += skierSpeed;
+        score = Math.round(skierMapY/100);
         this[privateMethods.placeNewObstacle](skierDirection);
         break;
 
       case 4:
-        skierSpeed += .02;
+        skierSpeed += acceleration;
         skierMapX += skierSpeed / 1.4142;
         skierMapY += skierSpeed / 1.4142;
+        score = Math.round(skierMapY/100);
         this[privateMethods.placeNewObstacle](skierDirection);
         break;
     }
 
-    Object.assign(this.state, { skierMapX, skierMapY, skierSpeed });
+    if (score > highscore)
+      highscore = score;
+
+    Object.assign(this.state, { skierMapX, skierMapY, skierSpeed, score, highscore });
+    this.gameHeader.innerHTML = `<h1>Highest: ${this.state.highscore} <> Current Score: ${this.state.score}</h1>`;
   }
 
   [privateMethods.placeInitialObstacles]() {
@@ -238,6 +252,17 @@ class GameMaster {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
+  [privateMethods.resetGame]() {
+    const { highscore, gameWidth, gameHeight } = this.state;
+    Object.assign(this.state, JSON.parse(JSON.stringify(initialState)), {
+      gameWidth,
+      gameHeight,
+      highscore,
+    });
+
+    this[privateMethods.placeInitialObstacles]();
+  }
+
   [privateMethods.setupKeyhandler](e) {
     let { skierDirection, skierMapX, skierSpeed } = this.state;
 
@@ -272,7 +297,10 @@ class GameMaster {
         break;
     }
 
-    Object.assign(this.state, { skierDirection, skierMapX, skierSpeed });
+    if (e.which === 32) // space
+      this[privateMethods.resetGame]();
+    else Object.assign(this.state, { skierDirection, skierMapX, skierSpeed });
+
     e.preventDefault();
   }
 }

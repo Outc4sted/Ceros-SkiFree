@@ -1,7 +1,7 @@
 # Ceros Ski Code Challenge [![Build Status](https://travis-ci.org/Outc4sted/Ceros-SkiFree.svg?branch=master)](https://travis-ci.org/Outc4sted/Ceros-SkiFree)
 
 #### https://outc4sted.github.io/Ceros-SkiFree
-Homework app that is a simple version of the classic Windows game SkiFree and integrated with TravisCI.
+Homework app that is refactored from a simple version of the classic Windows game SkiFree.
 
 ![SkiFree preview](https://i.imgur.com/q5tXyDZ.png)
 
@@ -13,6 +13,9 @@ Homework app that is a simple version of the classic Windows game SkiFree and in
 * Use of Symbols to create pseudo-private methods (which are also testable)
 * Fixed a bug that triggered when the player crashed and pressed left
 * Added feature where the skier moves faster as the game progresses
+* Integrated TravisCI for automated gh-pages deployment
+* Added a basic score and highscore dashboard
+* Reset the game with space bar
 
 ## Available Scripts
 
