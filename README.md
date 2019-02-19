@@ -3,7 +3,7 @@
 #### https://outc4sted.github.io/Ceros-SkiFree
 Homework app that is refactored from a simple version of the classic Windows game SkiFree.
 
-![SkiFree preview](https://i.imgur.com/q5tXyDZ.png)
+![SkiFree preview](https://i.imgur.com/v7mYJA4.png)
 
 * Set up babel for transpiling
 * Eliminated the need for jQuery and lodash dependencies
