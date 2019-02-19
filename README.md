@@ -10,6 +10,7 @@ Homework app that is a simple version of the classic Windows game SkiFree and in
 * Completely upgraded to ES6+ with all methods and state being testable
 * Use of Symbols to create pseudo-private methods (which are also testable)
 * Fixed a bug that triggered when the player crashed and pressed left
+* Added feature where the skier moves faster as the game progresses
 
 ## Available Scripts
 

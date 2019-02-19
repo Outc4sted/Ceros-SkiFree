@@ -135,29 +135,36 @@ class GameMaster {
   }
 
   [privateMethods.moveSkier]() {
-    const { skierDirection, skierSpeed } = this.state;
-    let { skierMapX, skierMapY } = this.state;
+    const { skierDirection } = this.state;
+    let { skierMapX, skierMapY, skierSpeed } = this.state;
 
     switch(skierDirection) {
+      case 0:
+        skierSpeed = initialState.skierSpeed;
+        break;
+
       case 2:
+        skierSpeed += .02;
         skierMapX -= Math.round(skierSpeed / 1.4142);
         skierMapY += Math.round(skierSpeed / 1.4142);
         this[privateMethods.placeNewObstacle](skierDirection);
         break;
 
       case 3:
+        skierSpeed += .02;
         skierMapY += skierSpeed;
         this[privateMethods.placeNewObstacle](skierDirection);
         break;
 
       case 4:
+        skierSpeed += .02;
         skierMapX += skierSpeed / 1.4142;
         skierMapY += skierSpeed / 1.4142;
         this[privateMethods.placeNewObstacle](skierDirection);
         break;
     }
 
-    Object.assign(this.state, { skierMapX, skierMapY });
+    Object.assign(this.state, { skierMapX, skierMapY, skierSpeed });
   }
 
   [privateMethods.placeInitialObstacles]() {
