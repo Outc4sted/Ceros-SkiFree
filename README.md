@@ -1,4 +1,6 @@
-# Ceros Ski Code Challenge
+# Ceros Ski Code Challenge [![Build Status](https://travis-ci.org/Outc4sted/Ceros-SkiFree.svg?branch=master)](https://travis-ci.org/Outc4sted/Ceros-SkiFree)
+
+#### https://outc4sted.github.io/Ceros-SkiFree
 Homework app that is a simple version of the classic Windows game SkiFree and integrated with TravisCI.
 
 ![SkiFree preview](https://i.imgur.com/q5tXyDZ.png)
